@@ -32,7 +32,8 @@ const LoginScreen = ({ navigation }) => {
       if (response.data.token) {
         setSuccess(true);
         setTimeout(() => {
-          navigation.replace("Home");
+          navigation.navigate("Home");
+          //navigation.replace("Home");
         }, 2000);
       } else {
         setError(true);
