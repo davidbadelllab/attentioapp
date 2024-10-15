@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
       if (response.data.token) {
         setSuccess(true);
         setTimeout(() => {
-          navigation.replace("Home"); // Cambia a 'replace' en lugar de 'navigate'
+          navigation.replace("Home");
         }, 2000);
       } else {
         setError(true);
@@ -51,21 +51,21 @@ const LoginScreen = ({ navigation }) => {
     <View style={styles.container}>
       {/* Animación en la parte superior izquierda */}
       <LottieView
-        source={require("../../assets/Animation - 1729020863881.json")} // Ruta a tu archivo de animación
+        source={require("../../assets/Animation - 1729020863881.json")} 
         autoPlay
         loop
         style={styles.lottieTopLeft}
       />
       {/* Animación en la parte inferior derecha */}
       <LottieView
-        source={require("../../assets/Animation - 1729020725065.json")} // Ruta a tu archivo de animación
+        source={require("../../assets/Animation - 1729020725065.json")}
         autoPlay
         loop
         style={styles.lottieBottomRight}
       />
 
       <Image
-        source={require("../../assets/logoDark.png")} // Asegúrate de que esta ruta sea correcta
+        source={require("../../assets/logoDark.png")}
         style={styles.logo}
       />
       <TextInput
@@ -97,7 +97,7 @@ const LoginScreen = ({ navigation }) => {
 
       {loading && (
         <LottieView
-          source={require("../../assets/loading.json")} // Asegúrate de que esta ruta sea correcta
+          source={require("../../assets/loading.json")}
           autoPlay
           loop
           style={styles.loadingAnimation}
@@ -107,12 +107,12 @@ const LoginScreen = ({ navigation }) => {
       {success && (
         <View style={styles.animationOverlay}>
           <LottieView
-            source={require("../../assets/acepted.json")} // Ruta a tu archivo de animación de éxito
+            source={require("../../assets/acepted.json")}
             autoPlay
             loop={false}
             style={styles.animation}
             onAnimationFinish={() => {
-              setSuccess(false); // Resetear estado de éxito
+              setSuccess(false);
             }}
           />
         </View>
@@ -121,12 +121,12 @@ const LoginScreen = ({ navigation }) => {
       {error && (
         <View style={styles.animationOverlay}>
           <LottieView
-            source={require("../../assets/error.json")} // Ruta a tu archivo de animación de error
+            source={require("../../assets/error.json")}
             autoPlay
             loop={false}
             style={styles.animation}
             onAnimationFinish={() => {
-              setError(false); // Resetear estado de error
+              setError(false);
             }}
           />
         </View>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
-    backgroundColor: "#F7F9FC", // Color de fondo
+    backgroundColor: "#F7F9FC",
   },
   logo: {
     width: 200,
@@ -155,10 +155,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 12,
     paddingHorizontal: 10,
-    backgroundColor: "#ffffff", // Color del campo de entrada
+    backgroundColor: "#ffffff",
   },
   button: {
-    backgroundColor: "#007BFF", // Color del botón
+    backgroundColor: "#007BFF",
     borderRadius: 10,
     paddingVertical: 12,
     alignItems: "center",
@@ -181,8 +181,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "50%",
     left: "50%",
-    width: 100, // Ajusta el tamaño según sea necesario
-    height: 100, // Ajusta el tamaño según sea necesario
+    width: 100,
+    height: 100,
     transform: [{ translateX: -50 }, { translateY: -50 }],
   },
   animationOverlay: {
@@ -193,27 +193,27 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.9)", // Fondo blanco con un poco de transparencia
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
     zIndex: 1,
   },
   animation: {
-    width: 600, // Tamaño de la animación
-    height: 600, // Tamaño de la animación
+    width: 600,
+    height: 600,
   },
   lottieTopLeft: {
     position: "absolute",
     top: -100,
     left: 0,
-    width: 500, // Ajusta el tamaño según sea necesario
-    height: 500, // Ajusta el tamaño según sea necesario
+    width: 500,
+    height: 500,
   },
   lottieBottomRight: {
     position: "absolute",
     bottom: 0,
     right: -90,
-    width: 500, // Ajusta el tamaño según sea necesario
-    height: 500, // Ajusta el tamaño según sea necesario
-    transform: [{ rotate: "90deg" }], // Rota 90 grados
+    width: 500,
+    height: 500,
+    transform: [{ rotate: "90deg" }],
   },
 });
 
