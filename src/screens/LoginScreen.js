@@ -33,7 +33,6 @@ const LoginScreen = ({ navigation }) => {
         setSuccess(true);
         setTimeout(() => {
           navigation.navigate("Home");
-          //navigation.replace("Home");
         }, 2000);
       } else {
         setError(true);
