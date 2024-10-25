@@ -35,7 +35,7 @@ const ReviewEmails = ({ route, navigation }) => {
 				}
 			});
 
-			if (data) {
+			if (response.data) {
 				alert("Respuesta enviada con éxito.");
 				setResponse("");
 				navigation.goBack();
@@ -89,8 +89,8 @@ const ReviewEmails = ({ route, navigation }) => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		// backgroundColor: "#141b2b",
-		backgroundColor: "#fff",
+		backgroundColor: "#141b2b",
+		// backgroundColor: "#fff",
 	},
 	header: {
 		flexDirection: "row",
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 22,
 		fontWeight: "bold",
-		color: "#333",
+		color: "#fff",
 	},
 	closeButton: {
 		padding: 10,
@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		marginHorizontal: 20,
 		marginTop: 10,
+		color: "#fff",
 	},
 	emailContent: {
 		fontSize: 16,

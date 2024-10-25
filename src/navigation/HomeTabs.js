@@ -59,7 +59,10 @@ export default function HomeTabs() {
 		>
 			<Tab.Screen name="Home" component={HomeScreen} />
 			<Tab.Screen name="Calendar" component={CalendarScreen} />
-			<Tab.Screen name="Messaging" component={MessagingScreen} />
+			<Tab.Screen
+				name="Messaging"
+				component={MessagingScreen}
+			/>
 			<Tab.Screen
 				name="Emails"
 				component={EmailsScreen}

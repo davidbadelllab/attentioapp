@@ -97,7 +97,7 @@ const EmailsScreen = () => {
 				>
 					<View className="flex-1">
 						{/* Cuatro tarjetas */}
-						<View className="flex-row flex-wrap  justify-between mt-4 mb-10">
+						<View className="flex-row flex-wrap justify-between mt-4 mb-10">
 							<TouchableOpacity
 								onPress={() => setFilter("answered_by_gemini")}
 								style={styles.filterButton}
@@ -123,7 +123,8 @@ const EmailsScreen = () => {
 							style={styles.emailCard}
 							onPress={() => navigation.navigate("ReviewEmails", { email })}
 							onLongPress={() => updateEmailStatus(email.id, "new_status")}
-                            key={email.id}
+							key={email.id}
+							className="bg-gray-800/70"
 						>
 							<Text style={styles.emailSubject}>{email.subject}</Text>
 							<Text style={styles.emailFrom}>From: {email.from}</Text>
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
 		color: "#ffffff",
 	},
 	emailCard: {
-		backgroundColor: "#141b2b",
+		// backgroundColor: "#141b2b",
 		borderRadius: 10,
 		padding: 15,
 		marginBottom: 10,

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Alert, Image } from "react-native";
-import axios from "axios";
 import { useUser } from '../context/UserContext';
 import * as ImagePicker from 'expo-image-picker'; // Importar ImagePicker de Expo
 import EmojiSelector from 'react-native-emoji-selector'; // Librería para el selector de emojis
+import apiClient from '../api/client';
 
-const ActiveMessaging = ({ contact, onBack }) => {
+const ActiveMessaging = ({ route, navigation }) => {
+  const { contact } = route.params;
   const { user } = useUser();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false); // Estado para mostrar el selector de emojis
   const [image, setImage] = useState(null); // Estado para almacenar la imagen seleccionada
-
+  console.log("contact", contact);
   // Obtener los mensajes del contacto seleccionado
   useEffect(() => {
     fetchMessages();
@@ -19,7 +20,7 @@ const ActiveMessaging = ({ contact, onBack }) => {
 
   const fetchMessages = async () => {
     try {
-      const response = await axios.post("https://attention.cl/api/messages/fetch", {
+      const response = await apiClient.post("/messages/fetch", {
         id: contact.id,
       }, {
         headers: {
@@ -27,8 +28,10 @@ const ActiveMessaging = ({ contact, onBack }) => {
         },
       });
 
-      if (response.data.messages) {
-        setMessages(response.data.messages);
+      const { messages } = response.data;
+
+      if (messages.length > 0) {
+        setMessages(messages);
       } else {
         console.log("No se encontraron mensajes.");
       }
@@ -58,7 +61,7 @@ const ActiveMessaging = ({ contact, onBack }) => {
         messageData.image = formData;
       }
 
-      const response = await axios.post("https://attention.cl/api/messages/send", messageData, {
+      const response = await apiClient.post("/messages/send", messageData, {
         headers: {
           Authorization: `Bearer ${user.token}`,
           'Content-Type': 'multipart/form-data',
@@ -95,10 +98,6 @@ const ActiveMessaging = ({ contact, onBack }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <TouchableOpacity onPress={onBack} style={styles.backButton}>
-        <Text style={styles.backButtonText}>{"<"} Volver a contactos</Text>
-      </TouchableOpacity>
-
       <FlatList
         data={messages}
         renderItem={renderMessageItem}
