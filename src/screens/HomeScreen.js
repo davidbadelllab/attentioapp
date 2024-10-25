@@ -10,7 +10,7 @@ import {
 	SafeAreaView,
 	StatusBar,
 	Image,
-	TouchableOpacity,
+	Dimensions
 } from "react-native";
 import Animated, {
 	useSharedValue,
@@ -20,18 +20,17 @@ import Animated, {
 import { useUser } from "../context/UserContext";
 import apiClient from "../api/client";
 import Header from "../components/Header";
+import { ProgressChart, LineChart } from "react-native-chart-kit";
 
-const ProfileWidget = () => {
-	const { user } = useUser();
-	return (
-		<View style={styles.profileWidget}>
-			<Image
-				source={{ uri: user?.profilePicture || "https://via.placeholder.com/150" }}
-				style={styles.profileImage}
-			/>
-			<Text style={styles.profileName}>{user?.name || "Username"}</Text>
-		</View>
-	);
+const screenWidth = Dimensions.get("window").width;
+console.log(screenWidth);
+const chartConfig = {
+	backgroundGradientFrom: "#0B192C",
+	backgroundGradientTo: "#0B192C",
+	color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+	labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+	strokeWidth: 2,
+	barPercentage: 0.5,
 };
 
 const HomeScreen = () => {
@@ -40,7 +39,6 @@ const HomeScreen = () => {
 	const { user } = useUser(); // Obtener el token del contexto del usuario
 
 	const opacity = useSharedValue(0);
-	const navigation = useNavigation();
 
 	const fetchMetrics = async () => {
 		console.log("user", user);
@@ -81,6 +79,30 @@ const HomeScreen = () => {
 		);
 	}
 
+	if (!metrics) {
+		return <Text style={styles.noData}>No data available</Text>;
+	}
+
+	const progressData = {
+		labels: ["GPT %"], // Solo un dato para el progreso de GPT
+		data: [metrics.percentageRespondedByGemini / 100],
+	};
+
+	const lineData = {
+		labels: ["Human %", "GPT %"], // Representación de ambos porcentajes en la misma línea
+		datasets: [
+			{
+				data: [
+					metrics.percentageRespondedByHuman,
+					metrics.percentageRespondedByGemini,
+				],
+				color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // Color ajustado si es necesario
+				strokeWidth: 2,
+			},
+		],
+		legend: ["Response Rate"],
+	};
+
 	// bg-gray-900
 
 	// for view card bg-gray-800/70
@@ -96,7 +118,35 @@ const HomeScreen = () => {
 
 					{/* Cuatro tarjetas */}
 					<View className="flex-row flex-wrap justify-center mt-4">
-						<View className="w-44 h-44 bg-gray-800/70 mx-2 mb-2 rounded-lg justify-center items-center">
+						<View className="w-92 h-80 bg-gray-800/70 mx-2 mb-2 rounded-lg justify-center items-center">
+							<ProgressChart
+								data={progressData}
+								width={screenWidth - 100}
+								height={228} // Aumentar altura para espacio
+								strokeWidth={25} // Aumentar grosor de la barra para reducir espacio interno
+								radius={60} // Mantener un radio más grande para que el círculo exterior crezca
+								chartConfig={{
+									...chartConfig,
+									color: (opacity = 1) => `rgba(173, 73, 225, ${opacity})`,
+								}}
+								hideLegend={true}
+							/>
+							<Text style={[styles.metricValueInside, { marginTop: 0 }]}>
+								{metrics.percentageRespondedByGemini.toFixed(2)}%
+							</Text>
+						</View>
+						<View className="w-92 h-80 bg-gray-800/70 mx-2 mb-2 rounded-lg justify-center items-center">
+							<LineChart
+								data={lineData}
+								width={screenWidth - 100}
+								height={270}
+								verticalLabelRotation={30}
+								chartConfig={chartConfig}
+								bezier
+							/>
+						</View>
+
+						{/* <View className="w-44 h-44 bg-gray-800/70 mx-2 mb-2 rounded-lg justify-center items-center">
 							<MaterialIcons name="insights" size={70} color="gray" />
 
 							<Text className="text-gray-600/70 text-center font-bold text-lg">
@@ -146,7 +196,7 @@ const HomeScreen = () => {
 							<Text className="text-gray-600/70 text-center font-bold text-2xl">
 								{metrics?.totalEmails}
 							</Text>
-						</View>
+						</View> */}
 					</View>
 				</View>
 			</Animated.View>
@@ -216,6 +266,13 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.1,
 		shadowRadius: 8,
 		elevation: 10,
+	},
+	metricValueInside: {
+		fontSize: 16,
+		color: "#AD49E1",
+		fontWeight: "bold",
+		marginTop: 10,
+		textAlign: "center",
 	},
 	metricTitle: {
 		fontSize: 16,
